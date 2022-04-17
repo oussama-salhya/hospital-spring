@@ -11,6 +11,11 @@
     <div class="card">
         <div class="card-header">LISTE DES PATIENTS</div>
         <div class="card-body">
+            <form method="get" th:action="@{index}">
+                <label>keyword</label>
+                <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
+                <button type="submit" class="btn btn-primary">RECHERCHER</button>
+            </form>
 <table class = "table">
     <thead>
     <tr>
@@ -26,14 +31,18 @@
         <td th:text="${p.nom}"></td>
         <td th:text="${p.malade}"></td>
         <td th:text="${p.score}"></td>
+        <td>
+            <a onclick="return confirm('Souhaitez-vous vraiment supprimer ce patient de façon definitive ?')" class="btn btn-danger"
+               th:href="@{delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Supprimer</a>
+        </td>
     </tr>
 
     </tbody>
 </table>
             <ul class=" nav nav-pills">
                 <li th:each="page, status:${pages}">
-                    <a th:class="${status.index==currentPage}? 'btn btn-info ms-1' : 'btn btn-outline-info m-lg-1' "
-                       th:href="@{index(page=${status.index})}"
+                    <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary m-lg-1' "
+                       th:href="@{index(page=${status.index}, keyword=${keyword})}"
                        th:text="${status.index}"></a>
                 </li>
 

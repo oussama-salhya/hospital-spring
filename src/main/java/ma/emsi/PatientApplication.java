@@ -28,7 +28,7 @@ public class PatientApplication {
 						patient.setNom(name);
 						patient.setDateNaissance(new Date());
 						patient.setScore((int)(Math.random()*4688));
-						patient.setMalade(Math.random()*1000>0.5);
+						patient.setMalade((Math.random()*568)>0.5);
 						patientRepository.save(patient);
 					}
 
