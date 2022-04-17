@@ -24,6 +24,7 @@ public class PatientController {
         Page<Patient> pagePatients= patientRepository.findAll(PageRequest.of(page, size)); //  je veux les patients de la page 0 et size 5
         model.addAttribute("listpatients", pagePatients.getContent()); // getcontent donne la liste des patients de la page
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
+        model.addAttribute("currentPage", page);
         return "patients";
     }
 }
