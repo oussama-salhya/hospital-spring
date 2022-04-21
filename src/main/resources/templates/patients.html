@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1" >
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,22 +9,31 @@
 
 </head>
 <body>
-<div class=" container mt-2">
+
+<div layout:fragment="searchbar">
+
+    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{index}">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
+        <button class="btn btn-outline-info" type="submit">Rechercher</button>
+    </form>
+</div>
+
+<div layout:fragment="content1">
+
+<div class=" container mt-2 " >
     <div class="card">
         <div class="card-header">LISTE DES PATIENTS</div>
         <div class="card-body">
-            <form method="get" th:action="@{index}">
-                <label>keyword</label>
-                <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
-                <button type="submit" class="btn btn-primary">RECHERCHER</button>
-            </form>
-<table class = "table">
+
+<table class="table table-bordered" >
     <thead>
-    <tr>
-        <th>Id</th>
-        <th>Nom</th>
-        <th>Malade</th>
-        <th>Score</th>
+    <tr class="table-warning">
+        <th scope="col">Id</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Malade</th>
+        <th scope="col">Score</th>
+        <th scope="col">Action</th>
+
     </tr>
     </thead>
     <tbody>
@@ -34,6 +45,10 @@
         <td>
             <a onclick="return confirm('Souhaitez-vous vraiment supprimer ce patient de façon definitive ?')" class="btn btn-danger"
                th:href="@{delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Supprimer</a>
+
+            <a  class="btn btn-warning"
+               th:href="@{editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Modifier</a>
+
         </td>
     </tr>
 
@@ -47,9 +62,16 @@
                 </li>
 
             </ul>
+            <ul class="nav nav-pills">
+                <li>
+                    <a class="btn btn-outline-primary mt-4" th:href="@{formPatient}">Ajouter un patient</a>
+                </li>
+            </ul>
         </div>
 
     </div>
 </div>
+</div>
+
 </body>
 </html>

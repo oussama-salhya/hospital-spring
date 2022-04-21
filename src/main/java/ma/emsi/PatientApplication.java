@@ -5,7 +5,6 @@ import ma.emsi.repositories.PatientRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,7 @@ public class PatientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PatientApplication.class, args);
 	}
-	@Bean
+	//@Bean
 	CommandLineRunner commandLineRunner(
 			PatientRepository patientRepository
 	){
