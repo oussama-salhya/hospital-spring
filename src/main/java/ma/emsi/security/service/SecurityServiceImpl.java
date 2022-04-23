@@ -33,7 +33,6 @@ public class SecurityServiceImpl implements SecurityService {
         appUser.setUsername(username);
         appUser.setPassword(hashedPWD);
         appUser.setActive(true);
-        System.out.println(appUser.getUserId());
         AppUser savedAppUser = appUserReository.save(appUser);
         return savedAppUser;
     }
@@ -55,6 +54,8 @@ public class SecurityServiceImpl implements SecurityService {
         AppRole appRole = appRoleRepository.findByRoleName(roleName); // charger le role
         if (appRole == null) throw new RuntimeException("Role not found");
         appUser.getAppRoles().add(appRole);// ajouter le role dans la collection des roles de appUser
+        appUserReository.save(appUser);// n'est pas necessaire
+
     }
 
     @Override

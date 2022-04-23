@@ -12,13 +12,7 @@
 </head>
 <body>
 
-<div layout:fragment="searchbar">
 
-    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/user/index}">
-        <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
-        <button class="btn btn-outline-info" type="submit">Rechercher</button>
-    </form>
-</div>
 
 <div layout:fragment="content1">
 
@@ -26,6 +20,13 @@
     <div class="card">
         <div class="card-header">LISTE DES PATIENTS</div>
         <div class="card-body">
+            <div>
+
+                <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/user/index}">
+                    <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
+                    <button class="btn btn-outline-info" type="submit">Rechercher</button>
+                </form>
+            </div>
 
 <table class="table table-bordered" >
     <thead>
@@ -34,8 +35,7 @@
         <th scope="col">Nom</th>
         <th scope="col">Malade</th>
         <th scope="col">Score</th>
-        <th scope="col">Action</th>
-
+        <th sec:authorize="hasAuthority('ADMIN')">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -44,13 +44,15 @@
         <td th:text="${p.nom}"></td>
         <td th:text="${p.malade}"></td>
         <td th:text="${p.score}"></td>
-        <td>
-            <a sec:authorize="hasRole('ADMIN')" onclick="return confirm('Souhaitez-vous vraiment supprimer ce patient de façon definitive ?')" class="btn btn-danger"
-               th:href="@{/admin/delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Supprimer</a>
-
-            <a sec:authorize="hasRole('ADMIN')" class="btn btn-warning"
-               th:href="@{/admin/editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Modifier</a>
-
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <a onclick="return confirm('Etes vous sur ? ')" class="btn btn-danger" th:href="@{/admin/delete(id=${p.id},keyword=${keyword} ,page=${currentPage})}">
+                Supprimer
+            </a>
+        </td>
+        <td sec:authorize="hasAuthority('ADMIN')">
+            <a  class="btn btn-success"  th:href="@{/admin/EditPatient(id=${p.id},keyword=${keyword},page=${currentPage})}">
+                Modifier
+            </a>
         </td>
     </tr>
 
@@ -58,7 +60,7 @@
 </table>
             <ul class=" nav nav-pills">
                 <li th:each="page, status:${pages}">
-                    <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary m-lg-1' "
+                    <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1' "
                        th:href="@{/user/index(page=${status.index}, keyword=${keyword})}"
                        th:text="${status.index}"></a>
                 </li>

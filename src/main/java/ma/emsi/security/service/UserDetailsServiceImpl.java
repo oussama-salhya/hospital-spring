@@ -1,5 +1,6 @@
 package ma.emsi.security.service;
 
+import lombok.AllArgsConstructor;
 import ma.emsi.security.entities.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,14 +16,14 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
+    //@Autowired
     private SecurityService securityService;
     @Override
     //code qui va se repetter dans tt les app qui utilise spring security
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);
         AppUser appUser = securityService.loadUserByUsername(username); // chercher l'user dans la bd a l'aide de ma couche service
         // prog imperative
         // avec spring sec les roles doivent etre dans une collection de type GrantedAuthority
@@ -52,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //on va creer un obj de type User qui va prendre les param suivant => username et password de appUser qu'on a chargé a partir de la db
         // le 3eme param => les roles mais ils doivent etre une collection de type GrantedAutority
 
-        User user = new User(appUser.getUsername(),appUser.getPassword(),authorities1);
+        User user = new User(appUser.getUsername(),appUser.getPassword(),authorities);
         return user;
     }
 }

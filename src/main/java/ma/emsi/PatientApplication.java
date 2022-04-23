@@ -18,7 +18,7 @@ public class PatientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PatientApplication.class, args);
 	}
-	//@Bean
+	@Bean
 	CommandLineRunner commandLineRunner(
 			PatientRepository patientRepository
 	){
@@ -47,7 +47,7 @@ public class PatientApplication {
 
 		};
 	}
-	@Bean
+	//@Bean
 	CommandLineRunner saveUsers(SecurityService securityService){
 		return args ->{
 			securityService.saveNewUser("loubna","1234","1234");
