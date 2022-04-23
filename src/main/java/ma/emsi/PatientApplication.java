@@ -2,9 +2,11 @@ package ma.emsi;
 
 import ma.emsi.entities.Patient;
 import ma.emsi.repositories.PatientRepository;
+import ma.emsi.security.service.SecurityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,24 @@ public class PatientApplication {
 			}
 
 
+
+
+		};
+	}
+	@Bean
+	CommandLineRunner saveUsers(SecurityService securityService){
+		return args ->{
+			securityService.saveNewUser("loubna","1234","1234");
+			securityService.saveNewUser("testuser1","1234","1234");
+			securityService.saveNewUser("testuser2","1234","1234");
+
+			securityService.saveNewRole("USER","");
+			securityService.saveNewRole("ADMIN","");
+
+			securityService.addRoleToUser("loubna","USER");
+			securityService.addRoleToUser("loubna","ADMIN");
+			securityService.addRoleToUser("testuser1","USER");
+			securityService.addRoleToUser("testuser2","USER");
 
 
 		};

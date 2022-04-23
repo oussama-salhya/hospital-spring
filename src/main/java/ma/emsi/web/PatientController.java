@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class PatientController {
     private PatientRepository patientRepository;
 
-    @GetMapping(path= "/index")
+    @GetMapping(path= "/user/index")
     public String patients(Model model,
                            @RequestParam(name= "page", defaultValue = "0") int page, // parametre d'url : request.getparametre(page), si on specifie pas le parametre il va prendre la valeur 0 par defaut
                            @RequestParam(name= "size", defaultValue = "5") int size,
@@ -35,32 +35,39 @@ public class PatientController {
         model.addAttribute("keyword",keyword);
         return "patients";
     }
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String delete(Long id, String keyword, int page){
         patientRepository.deleteById(id);
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
-    @GetMapping("/formPatient")
+    @GetMapping("/admin/formPatients")
     public String form(Model model){
         model.addAttribute("patient",new Patient());
         return "formPatients";
     }
-    @PostMapping("/save")
+    @PostMapping("user/save")
     public String save(Model model,
                        @Valid Patient patient,
                        BindingResult bindingResult,
                        @RequestParam(name= "page", defaultValue = "0") int page,
                        @RequestParam(name="keyword", defaultValue = "") String keyword){
         if (bindingResult.hasErrors())
-            return "FormPatient";
+            return "FormPatients";
         patientRepository.save(patient);
-        return "redirect:/index?page="+page + "&keyword="+ keyword;
+        return "redirect:/user/index?page="+page + "&keyword="+ keyword;
     }
+
+    @GetMapping("/")
+    public String home(){
+        return "home"; // retourne une page home.html
+    }
+
     //s'il a un id il fait update s'il est egale a null il fait insert
 
-
-    @GetMapping("/edit")
-    public String edit(Model model, Long id, String keyword, int page){
+    @GetMapping("/admin/edit")
+    public String edit(Model model, Long id,
+                       @RequestParam(name="keyword", defaultValue = "") String keyword,
+                       @RequestParam(name= "page", defaultValue = "0") int page){
         Patient patient = patientRepository.findById(id).orElse(null); // avec .get je le recuper s'il existe mais on peut utiliser orElse(null) null s'il ne trouve pas le patient
         model.addAttribute("patient",patient);
         if(patient==null) throw new RuntimeException("Patient introuvable");
@@ -68,6 +75,16 @@ public class PatientController {
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword",keyword);
         return "EditPatient";
+    }
+    @GetMapping("/user/listPatient")
+    public String listPatient(Model model, Long id,
+                              @RequestParam(defaultValue = "") String keyword,
+                              @RequestParam(defaultValue = "0") int page){
+        Patient patient = patientRepository.findById(id).get();
+        model.addAttribute("patient",patient);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("page",page);
+        return "listPatient";
     }
 
 }

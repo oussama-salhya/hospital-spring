@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="template1" >
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="template1"
+>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,7 +14,7 @@
 
 <div layout:fragment="searchbar">
 
-    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{index}">
+    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/user/index}">
         <input type="text" name="keyword" th:value="${keyword}" placeholder="chercher un patient">
         <button class="btn btn-outline-info" type="submit">Rechercher</button>
     </form>
@@ -43,11 +45,11 @@
         <td th:text="${p.malade}"></td>
         <td th:text="${p.score}"></td>
         <td>
-            <a onclick="return confirm('Souhaitez-vous vraiment supprimer ce patient de façon definitive ?')" class="btn btn-danger"
-               th:href="@{delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Supprimer</a>
+            <a sec:authorize="hasRole('ADMIN')" onclick="return confirm('Souhaitez-vous vraiment supprimer ce patient de façon definitive ?')" class="btn btn-danger"
+               th:href="@{/admin/delete(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Supprimer</a>
 
-            <a  class="btn btn-warning"
-               th:href="@{editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Modifier</a>
+            <a sec:authorize="hasRole('ADMIN')" class="btn btn-warning"
+               th:href="@{/admin/editPatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}">Modifier</a>
 
         </td>
     </tr>
@@ -57,14 +59,14 @@
             <ul class=" nav nav-pills">
                 <li th:each="page, status:${pages}">
                     <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary m-lg-1' "
-                       th:href="@{index(page=${status.index}, keyword=${keyword})}"
+                       th:href="@{/user/index(page=${status.index}, keyword=${keyword})}"
                        th:text="${status.index}"></a>
                 </li>
 
             </ul>
             <ul class="nav nav-pills">
                 <li>
-                    <a class="btn btn-outline-primary mt-4" th:href="@{formPatient}">Ajouter un patient</a>
+                    <a class="btn btn-outline-primary mt-4" th:href="@{/admin/formPatients}">Ajouter un patient</a>
                 </li>
             </ul>
         </div>
