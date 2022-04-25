@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface PatientRepository extends JpaRepository<Patient,Long> {
     Page<Patient> findByNomContains(String keyword, Pageable pageable);
+
 }

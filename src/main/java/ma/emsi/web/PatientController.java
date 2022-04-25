@@ -20,12 +20,13 @@ import java.util.List;
 public class PatientController {
     private PatientRepository patientRepository;
 
+
     @GetMapping(path= "/user/index")
     public String patients(Model model,
                            @RequestParam(name= "page", defaultValue = "0") int page, // parametre d'url : request.getparametre(page), si on specifie pas le parametre il va prendre la valeur 0 par defaut
                            @RequestParam(name= "size", defaultValue = "5") int size,
                            @RequestParam(name="keyword", defaultValue = "") String keyword){
-        Page<Patient> pagePatients = patientRepository.findByNomContains(keyword, (PageRequest.of(page,size)));
+        Page<Patient> pagePatients = patientRepository.findByNomContains(keyword, PageRequest.of(page,size));
         //  je veux les patients de la page 0 et size 5
         model.addAttribute("listpatients", pagePatients.getContent()); // getcontent donne la liste des patients de la page
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
@@ -33,6 +34,12 @@ public class PatientController {
         model.addAttribute("keyword",keyword);
         return "patients";
     }
+    @GetMapping(path = "/user/patients")
+    @ResponseBody
+    public  List<Patient> listPatients(){
+        return  patientRepository.findAll();
+    }
+
     @GetMapping(path="/admin/delete")
     public String delete(Long id, String keyword, int page){
         patientRepository.deleteById(id);
@@ -46,13 +53,12 @@ public class PatientController {
     @PostMapping(path="/admin/save")
     public String save(Model model,
                        @Valid Patient patient,
-                       BindingResult bindingResult,
-                       @RequestParam(name= "page", defaultValue = "0") int page,
-                       @RequestParam(name="keyword", defaultValue = "") String keyword){
-        if (bindingResult.hasErrors())
-            return "formPatients";
+                       BindingResult bindingResult, // =>stock les erreurs
+                       @RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "") String keyword){
+        if (bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/user/index?page="+page + "&keyword="+ keyword;
+        return "redirect:/user/index?page"+page+"&keyword"+keyword;
     }
 
     @GetMapping(path="/")
@@ -63,13 +69,11 @@ public class PatientController {
     //s'il a un id il fait update s'il est egale a null il fait insert
 
     @GetMapping(path="/admin/EditPatient")
-    public String EditPatient(Model model, Long id,
-                       @RequestParam(name="keyword", defaultValue = "") String keyword,
-                       @RequestParam(name= "page", defaultValue = "0") int page){
+    public String EditPatient(Model model, Long id, String keyword, int page){
         Patient patient = patientRepository.findById(id).orElse(null); // avec .get je le recuper s'il existe mais on peut utiliser orElse(null) null s'il ne trouve pas le patient
         if(patient==null) throw new RuntimeException("Patient introuvable");
         model.addAttribute("patient", patient);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("page", page);
         model.addAttribute("keyword",keyword);
         return "EditPatient";
     }
