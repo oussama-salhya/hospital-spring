@@ -34,7 +34,6 @@
         <th scope="col">Id</th>
         <th scope="col">Nom</th>
         <th scope="col">Malade</th>
-        <th scope="col">Score</th>
         <th sec:authorize="hasAuthority('ADMIN')">Action</th>
     </tr>
     </thead>
@@ -43,7 +42,6 @@
         <td th:text="${p.id}"></td>
         <td th:text="${p.nom}"></td>
         <td th:text="${p.malade}"></td>
-        <td th:text="${p.score}"></td>
         <td sec:authorize="hasAuthority('ADMIN')">
             <a onclick="return confirm('Etes vous sur ? ')" class="btn btn-danger" th:href="@{/admin/delete(id=${p.id},keyword=${keyword} ,page=${currentPage})}">
                 Supprimer
@@ -65,11 +63,6 @@
                        th:text="${status.index}"></a>
                 </li>
 
-            </ul>
-            <ul class="nav nav-pills">
-                <li>
-                    <a class="btn btn-outline-primary mt-4" th:href="@{/admin/formPatients}">Ajouter un patient</a>
-                </li>
             </ul>
         </div>
 

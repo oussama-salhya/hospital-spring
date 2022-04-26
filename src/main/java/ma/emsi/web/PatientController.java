@@ -26,13 +26,14 @@ public class PatientController {
                            @RequestParam(name= "page", defaultValue = "0") int page, // parametre d'url : request.getparametre(page), si on specifie pas le parametre il va prendre la valeur 0 par defaut
                            @RequestParam(name= "size", defaultValue = "5") int size,
                            @RequestParam(name="keyword", defaultValue = "") String keyword){
-        Page<Patient> pagePatients = patientRepository.findByNomContains(keyword, PageRequest.of(page,size));
+        Page<Patient> pagePatients = patientRepository.findByNomContains(keyword, PageRequest.of(page,size));// charger les patients a partir de la db
+        //stocker la liste dans le model
         //  je veux les patients de la page 0 et size 5
         model.addAttribute("listpatients", pagePatients.getContent()); // getcontent donne la liste des patients de la page
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword",keyword);
-        return "patients";
+        return "patient/patients";// nom de la vue
     }
     @GetMapping(path = "/user/patients")
     @ResponseBody
@@ -48,7 +49,7 @@ public class PatientController {
     @GetMapping(path="/admin/formPatients")
     public String formPatients(Model model){
         model.addAttribute("patient",new Patient());
-        return "formPatients";
+        return "patient/formPatients";
     }
     @PostMapping(path="/admin/save")
     public String save(Model model,
@@ -58,7 +59,7 @@ public class PatientController {
                        @RequestParam(defaultValue = "") String keyword){
         if (bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/user/index?page"+page+"&keyword"+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
     @GetMapping(path="/")
@@ -75,7 +76,7 @@ public class PatientController {
         model.addAttribute("patient", patient);
         model.addAttribute("page", page);
         model.addAttribute("keyword",keyword);
-        return "EditPatient";
+        return "patient/EditPatient";
     }
     @GetMapping(path="/user/listPatient")
     public String listPatient(Model model, Long id,
@@ -85,7 +86,7 @@ public class PatientController {
         model.addAttribute("patient",patient);
         model.addAttribute("keyword",keyword);
         model.addAttribute("page",page);
-        return "listPatient";
+        return "patient/listPatient";
     }
 
 }

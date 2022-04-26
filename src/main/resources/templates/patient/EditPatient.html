@@ -39,11 +39,7 @@
           <span class="text-danger" th:errors="${patient.malade}"></span>
         </div>
       </div>
-      <div class="form-group mt-2">
-        <label class="control-label">Score : </label>
-        <input class="form-control" type="text" name="score" th:required="required" th:value="${patient.score}">
-        <span class="text-danger" th:errors="${patient.score}"></span>
-      </div>
+
       <div class="mt-4">
         <button type="submit" class="btn btn-primary">Save</button>
       </div>

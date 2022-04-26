@@ -1,4 +1,4 @@
-package ma.emsi.web;
+package ma.emsi.security;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,4 +8,6 @@ public class SecurityController {
     public String notAuthorized(){
         return "403";
     }
+   // @GetMapping("/login")
+    //public String login(){ return "login";}
 }

@@ -61,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 
         // pour specifier les droits d'access
-        http.formLogin(); // vous demander a spring security je veux utliser un formulaire d'authentification
+         http.formLogin(); // vous demander a spring security je veux utliser un formulaire d'authentification
+        //http.formLogin().loginPage("/login");
         // pour utliser votre formulaire on ajout:
         //http.formLogin().loginPage("/login");
         //qlq soit les ressources utilisé dans l'app necessite une auth
@@ -71,7 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests().antMatchers("/").permitAll();
         http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/user/**").hasAnyAuthority("USER");
-        http.authorizeRequests().antMatchers("/webjars/**").permitAll();
+        http.authorizeRequests().antMatchers("/resources/**" ,"/webjars/**", "/login").permitAll();
+        //autoriser les ressources static
         http.authorizeRequests().anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/403");
 
