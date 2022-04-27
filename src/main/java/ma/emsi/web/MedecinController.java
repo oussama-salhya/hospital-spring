@@ -22,11 +22,10 @@ public class MedecinController {
     MedecinRepository medecinRepository;
     @GetMapping(path= "/user/medecins")
     public String medecin (Model model,
-                           @RequestParam(name="page", defaultValue = "0") int page,
+                           @RequestParam(name= "page", defaultValue = "0") int page,
                            @RequestParam(name="size", defaultValue = "5") int size,
                            @RequestParam(name="keyword", defaultValue = "") String keyword){
         Page<Medecin> pagemedecins= medecinRepository.findByNomContains(keyword, PageRequest.of(page, size));
-        List<Medecin> medecinList = medecinRepository.findAll();
         model.addAttribute("listMedecins",pagemedecins);
         model.addAttribute("pages", new int[pagemedecins.getTotalPages()]);
         model.addAttribute("currentPage", page);
@@ -36,27 +35,27 @@ public class MedecinController {
     @GetMapping(path="/admin/formMedecin")
     public String formMedecin(Model model){
         model.addAttribute("medecin", new Medecin());
-        return "medecin/formMedecin";
+        return "medecin/fromMedecin";
     }
     @GetMapping(path="/admin/deleteMedecin")
-    public String delete(Long id, String keyword, int page){
+    public String deleteMedecin(Long id, String keyword, int page){
         medecinRepository.deleteById(id);
         return "redirect:/user/medecins?page="+page+"&keyword="+keyword;
     }
 
     @PostMapping(path="/admin/saveMedecin")
-    public String save(Model model,
+    public String saveMedecin(Model model,
                        @Valid Medecin medecin,
                        BindingResult bindingResult, // =>stock les erreurs
                        @RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "") String keyword){
         if (bindingResult.hasErrors()) return "formMedecin";
         medecinRepository.save(medecin);
-        return "redirect:/user/medecins?page"+page+"&keyword"+keyword;
+        return "redirect:/user/medecins?page="+page+"&keyword="+keyword;
     }
     @GetMapping(path="/admin/EditMedecin")
-    public String EditPatient(Model model, Long id, String keyword, int page){
-        Medecin medecin = medecinRepository.findById(id).orElse(null); // avec .get je le recuper s'il existe mais on peut utiliser orElse(null) null s'il ne trouve pas le patient
+    public String EditMedecin(Model model, Long id, String keyword, int page){
+        Medecin medecin = medecinRepository.findById(id).orElse(null);
         if(medecin==null) throw new RuntimeException("Medecin introuvable");
         model.addAttribute("medecin", medecin);
         model.addAttribute("page", page);
