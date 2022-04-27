@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
+
 @Controller
 @AllArgsConstructor
 public class MedecinController {
@@ -22,9 +24,10 @@ public class MedecinController {
     public String medecin (Model model,
                            @RequestParam(name="page", defaultValue = "0") int page,
                            @RequestParam(name="size", defaultValue = "5") int size,
-                           @RequestParam(name="keyword", defaultValue = "keyword") String keyword){
+                           @RequestParam(name="keyword", defaultValue = "") String keyword){
         Page<Medecin> pagemedecins= medecinRepository.findByNomContains(keyword, PageRequest.of(page, size));
-        model.addAttribute("listMedecins",pagemedecins.getContent());
+        List<Medecin> medecinList = medecinRepository.findAll();
+        model.addAttribute("listMedecins",pagemedecins);
         model.addAttribute("pages", new int[pagemedecins.getTotalPages()]);
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword",keyword);
@@ -33,7 +36,7 @@ public class MedecinController {
     @GetMapping(path="/admin/formMedecin")
     public String formMedecin(Model model){
         model.addAttribute("medecin", new Medecin());
-        return "formMedecin";
+        return "medecin/formMedecin";
     }
     @GetMapping(path="/admin/deleteMedecin")
     public String delete(Long id, String keyword, int page){

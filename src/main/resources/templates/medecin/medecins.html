@@ -20,14 +20,16 @@
         </tr>
         </thead>
         <tbody>
+
         <tr th:each= "m:${listMedecins}">
-            <a>test</a>
             <td th:text="${m.id}"></td>
             <td th:text="${m.nom}"></td>
             <td th:text="${m.specialite}"></td>
             <td th:text="${m.email}"></td>
 
+
         </tr>
+
 
         </tbody>
     </table>
@@ -35,7 +37,7 @@
         <ul class=" nav nav-pills">
             <li th:each="page, status:${pages}">
                 <a th:class="${status.index==currentPage}? 'btn btn-primary ms-1' : 'btn btn-outline-primary ms-1' "
-                   th:href="@{/user/index(page=${status.index}, keyword=${keyword})}"
+                   th:href="@{/user/medecins(page=${status.index}, keyword=${keyword})}"
                    th:text="${status.index}"></a>
             </li>
 
