@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -32,7 +34,8 @@ public class Patient {
     private String codePostal;
     private String numeroTelephone;
     private Titre titre;
-    @OneToMany(mappedBy ="patient" ,fetch=FetchType.LAZY)
+
+    @OneToMany(mappedBy ="patient" ,fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<RendezVous> rendezVous;
 
 }

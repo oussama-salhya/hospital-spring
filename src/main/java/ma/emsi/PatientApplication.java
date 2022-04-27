@@ -1,7 +1,6 @@
 package ma.emsi;
 
 import ma.emsi.entities.*;
-import ma.emsi.repositories.ConsultationRepository;
 import ma.emsi.repositories.MedecinRepository;
 import ma.emsi.repositories.PatientRepository;
 import ma.emsi.repositories.RendezVousRepository;
@@ -10,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -21,16 +21,16 @@ public class PatientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PatientApplication.class, args);
 	}
-	@Bean
+	//@Bean
+	//@Transactional
 	CommandLineRunner commandLineRunner(
 			PatientRepository patientRepository,
 			RendezVousRepository rendezVousRepository,
-			MedecinRepository medecinRepository,
-			ConsultationRepository consultationRepository
+			MedecinRepository medecinRepository
 	){
-		return args->{
+		return args-> {
 			System.out.println("test");
-			Stream.of("Xavier", "norman", "kai").forEach(name->{
+			/*Stream.of("Xavier", "norman", "kai").forEach(name->{
 						Patient patient= new Patient();
 						patient.setNom(name);
 						patient.setAdresse("adresse");
@@ -39,35 +39,37 @@ public class PatientApplication {
 						patient.setNumeroTelephone("06"+(int)(Math.random()*90000));
 						patient.setDateNaissance(new Date());
 						patient.setMalade((Math.random()*568)>0.5);
+						patient.setRendezVous(null);
 						patientRepository.save(patient);
 					}
 
 
-			);
+			);*/
 			List<Patient> listp= patientRepository.findAll();
 			for (Patient p:listp
 				 ) {
 				p.getNom();
 
 			}
-			Stream.of("loubna", "hayat", "hamza")
-					.forEach(name->{
+			/*Stream.of("loubna", "hayat", "hamza")
+					.forEach(name -> {
 								Medecin medecin = new Medecin();
 								medecin.setNom(name);
-								medecin.setEmail(name+"@gmail.com");
+								medecin.setEmail(name + "@gmail.com");
 								medecin.setSpecialite("dentaire");
+								medecin.setRendezVous(null);
 								medecinRepository.save(medecin);
+								System.out.println("done");
 							}
 
-					);
+					);*/
 			List<Medecin> medecins= medecinRepository.findAll();
 			for (Medecin m: medecins
 				 ) {
-				m.getId();
 
-				m.toString();
+				System.out.println("nom=>"+m.getNom());
 			}
-			Stream.of(RendezVous.StatusRDV.CANCELED,RendezVous.StatusRDV.DONE,RendezVous.StatusRDV.PENDING )
+			/*Stream.of(RendezVous.StatusRDV.CANCELED,RendezVous.StatusRDV.DONE,RendezVous.StatusRDV.PENDING )
 					.forEach( status->{
 						RendezVous rendezVous= new RendezVous();
 						rendezVous.setDate(new Date());
@@ -78,18 +80,15 @@ public class PatientApplication {
 					}
 
 			);
-			List<RendezVous> RDVs= rendezVousRepository.findAll();
-			Stream.of("rapport ABC", "rapport LMN", "rapport XZY")
-					.forEach(rapport-> {
-						Consultation consultation= new Consultation();
-						consultation.setDateConsultation(new Date());
-						consultation.setRapport(rapport);
-						consultation.setRendezVous(RDVs);
-					});
-
+			List<RendezVous> RDVs = rendezVousRepository.findAll();
+			for (RendezVous r :
+					RDVs) {
+				r.getId();
+			}*/
 
 
 		};
+
 
 
 
