@@ -25,6 +25,7 @@ public class RendezVous {
     private Patient patient;
     @ManyToOne
     private Medecin medecin;
-
+    @OneToMany(mappedBy = "rendezVous")
+    private Collection<Consultation> consultation;
 
 }
