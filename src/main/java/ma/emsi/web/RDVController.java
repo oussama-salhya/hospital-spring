@@ -5,39 +5,87 @@ import ma.emsi.entities.Medecin;
 import ma.emsi.entities.Patient;
 import ma.emsi.entities.RendezVous;
 import ma.emsi.entities.StatusRDV;
+import ma.emsi.repositories.MedecinRepository;
+import ma.emsi.repositories.PatientRepository;
 import ma.emsi.repositories.RendezVousRepository;
+import ma.emsi.service.IHopitalService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
 @AllArgsConstructor
 public class RDVController {
     RendezVousRepository rendezVousRepository;
+    PatientRepository patientRepository;
+    MedecinRepository medecinRepository;
+    IHopitalService hopitalService;
 
-    @GetMapping(path = "/user/RDV")
+    @GetMapping(path = "user/rdv")
     public String Rendezvous(Model model,
                              @RequestParam(name = "page", defaultValue = "0") int page, // parametre d'url : request.getparametre(page), si on specifie pas le parametre il va prendre la valeur 0 par defaut
-                             @RequestParam(name = "size", defaultValue = "5") int size,
-                             @RequestParam(name = "date", defaultValue = "today") Date date
+                             @RequestParam(name = "size", defaultValue = "5") int size
+
     ) {
-        Page<RendezVous> pageRDV = rendezVousRepository.findByDate(date, PageRequest.of(page, size));
+        Page<RendezVous> pageRDV = rendezVousRepository.findAll(PageRequest.of(page, size));
         model.addAttribute("listRDV", pageRDV.getContent()); // getcontent donne la liste des patients de la page
         model.addAttribute("pages", new int[pageRDV.getTotalPages()]);
         model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", date);
-        return "RDV/listeRDVs";// nom de la vue
+        return "RDV/Rendezvous";// nom de la vue
     }
 
     @GetMapping(path = "/admin/formRendezVous")
     public String formRendezVous(Model model) {
         model.addAttribute("rendezvous", new RendezVous());
-        return "RDV/rendezvous";
+        model.addAttribute("patients", patientRepository.findAll());
+        model.addAttribute("medecins", medecinRepository.findAll());
+        return "RDV/formRDV";
+    }
+    @PostMapping(path="/admin/saveRDV")
+    public String saveRDV(Model model, @Valid RendezVous rendezVous,
+                       BindingResult bindingResult, // =>stock les erreurs
+                       @RequestParam(defaultValue = "0") int page){
+        if (bindingResult.hasErrors()) return "RDV/formRDV";
+
+       /* Long pid= (Long) model.getAttribute("monPid");
+        Long mid= (Long) model.getAttribute("monMid");
+        System.out.println("printing pid and mid to check if we get them");
+        System.out.println("pid="+ pid);
+        System.out.println("mid="+ mid);
+
+        Patient patient= patientRepository.findById(pid).orElse(null);
+        Medecin medecin= medecinRepository.findById(mid).orElse(null);
+        rendezVous.setPatient(patient);
+        rendezVous.setMedecin(medecin);
+        System.out.println(patient);
+       Patient patient= (Patient) model.getAttribute("patient");
+        Medecin medecin = (Medecin) model.getAttribute("medecin");
+        rendezVous.setPatient(patient);
+        rendezVous.setMedecin(medecin);*/
+
+        hopitalService.saveRendezVous(rendezVous);
+        return "redirect:/user/rdv?page="+page;
+    }
+    @GetMapping(path="/admin/deleteRDV")
+    public String deleteRDV(Long id,  int page){
+        rendezVousRepository.deleteById(id);
+        return "redirect:/user/rdv?page="+page;
+    }
+    @GetMapping(path="/admin/EditRDV")
+    public String EditRDV(Model model, Long id,int page){
+        RendezVous rendezVous = rendezVousRepository.findById(id).orElse(null); // avec .get je le recuper s'il existe mais on peut utiliser orElse(null) null s'il ne trouve pas le patient
+        if(rendezVous==null) throw new RuntimeException("Rendez-vous introuvable");
+        model.addAttribute("rendezVous", rendezVous);
+        model.addAttribute("page", page);
+        return "RDV/EditRDV";
     }
 
 }

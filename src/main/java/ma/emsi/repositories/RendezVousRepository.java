@@ -12,7 +12,5 @@ import java.util.Date;
 @Transactional
 public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
     Page<RendezVous> findByDate(Date date, Pageable pageable);
-    Page<RendezVous> findByStatusrdv(StatusRDV statusRDV, Pageable pageable);
-    Page<RendezVous> findByDateAndStatusrdv(Date date, StatusRDV statusRDV, Pageable pageable);
 }
 

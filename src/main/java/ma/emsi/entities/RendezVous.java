@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -25,7 +24,5 @@ public class RendezVous {
     private Patient patient;
     @ManyToOne
     private Medecin medecin;
-    @OneToMany(mappedBy = "rendezVous")
-    private Collection<Consultation> consultation;
 
 }
