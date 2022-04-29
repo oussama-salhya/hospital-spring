@@ -52,9 +52,9 @@ public class PatientController {
         return "patient/formPatients";
     }
     @PostMapping(path="/admin/save")
-    public String save(Model model,
+    public String save(Model model,// =>BindingResult place les erreurs dans le model
                        @Valid Patient patient,
-                       BindingResult bindingResult, // =>stock les erreurs
+                       BindingResult bindingResult, // gener la liste des erreurs
                        @RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "") String keyword){
         if (bindingResult.hasErrors()) return "formPatients";

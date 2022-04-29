@@ -14,8 +14,8 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
-@Data
+@Entity // entite jpa qui a un id
+@Data // lombok ajout les getters et setters
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -35,7 +35,5 @@ public class Patient {
     private String numeroTelephone;
     private Titre titre;
 
-    @OneToMany(mappedBy ="patient" ,fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<RendezVous> rendezVous;
 
 }
