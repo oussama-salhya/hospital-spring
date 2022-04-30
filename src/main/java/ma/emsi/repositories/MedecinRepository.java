@@ -1,6 +1,7 @@
 package ma.emsi.repositories;
 
 import ma.emsi.entities.Medecin;
+import net.bytebuddy.implementation.bytecode.ShiftRight;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

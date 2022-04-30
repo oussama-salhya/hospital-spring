@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
+//classe qui va gérer les requetés http
 @Controller
 @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository;
-
-
-    @GetMapping(path= "/user/index")
+    @GetMapping(path= "/user/index") //route
+    // fct patients() appelée => si une requête de type GET est envoyée sur GetMapping
     public String patients(Model model,
                            @RequestParam(name= "page", defaultValue = "0") int page, // parametre d'url : request.getparametre(page), si on specifie pas le parametre il va prendre la valeur 0 par defaut
                            @RequestParam(name= "size", defaultValue = "5") int size,
                            @RequestParam(name="keyword", defaultValue = "") String keyword){
         Page<Patient> pagePatients = patientRepository.findByNomContains(keyword, PageRequest.of(page,size));// charger les patients a partir de la db
         //stocker la liste dans le model
+        //model creer des variables, permet de recuperer les données aupres de la vue
         //  je veux les patients de la page 0 et size 5
         model.addAttribute("listpatients", pagePatients.getContent()); // getcontent donne la liste des patients de la page
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);

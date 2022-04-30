@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+
     //@Autowired
     private SecurityService securityService;
     @Override

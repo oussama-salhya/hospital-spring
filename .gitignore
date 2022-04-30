@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+# Auto detect text files and perform LF normalization
+
+*.js linguist-detectable=false
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+*.scss linguist-detectable=false

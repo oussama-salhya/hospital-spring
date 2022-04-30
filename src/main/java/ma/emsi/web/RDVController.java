@@ -43,14 +43,16 @@ public class RDVController {
     }
 
     @GetMapping(path = "/admin/formRendezVous")
-    public String formRendezVous(Model model) {
+    public String formRendezVous(Model model/*,String nomPatient,String nomMedecin*/) {
         model.addAttribute("rendezvous", new RendezVous());
+        /*model.addAttribute("nomPatient",nomPatient);
+        model.addAttribute("nomMedecin",nomMedecin);*/
         model.addAttribute("patients", patientRepository.findAll());
         model.addAttribute("medecins", medecinRepository.findAll());
         return "RDV/formRDV";
     }
     @PostMapping(path="/admin/saveRDV")
-    public String saveRDV(Model model, @Valid RendezVous rendezVous,
+    public String saveRDV(Model model, @Valid RendezVous rendezVous,String nomPatient,String nomMedecin,
                        BindingResult bindingResult, // =>stock les erreurs
                        @RequestParam(defaultValue = "0") int page){
         if (bindingResult.hasErrors()) return "RDV/formRDV";
@@ -71,6 +73,19 @@ public class RDVController {
         rendezVous.setPatient(patient);
         rendezVous.setMedecin(medecin);*/
 
+       /* Patient patient = patientRepository.findByNom(nomPatient);
+        Medecin medecin = medecinRepository.findByNom(nomMedecin);
+        if (patient != null && rendezVous.getPatient()==null && medecin != null && rendezVous.getMedecin()==null){
+            rendezVous.setPatient(patient);
+            rendezVous.setMedecin(medecin);
+            rendezVousRepository.save(rendezVous);
+            return "redirect:/user/rdv";
+
+        }
+        else{
+            return "redirect:/admin/formRendezVous";
+        }
+        */
         hopitalService.saveRendezVous(rendezVous);
         return "redirect:/user/rdv?page="+page;
     }

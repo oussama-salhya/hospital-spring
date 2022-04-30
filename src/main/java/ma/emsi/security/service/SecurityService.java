@@ -4,6 +4,7 @@ package ma.emsi.security.service;
 import ma.emsi.security.entities.AppRole;
 import ma.emsi.security.entities.AppUser;
 
+//Interface => declarer les signatures des méthodes pour les traitements des utilisateurs et ses roles
 public interface SecurityService {
     AppUser saveNewUser(String username, String password, String verifyPassword);//permet d'ajouter un nv user
     //pour le creer on aura besoin des 3 param ^

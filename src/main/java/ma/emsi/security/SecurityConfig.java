@@ -6,9 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,18 +18,16 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    //configure=>la methode configure avec AuthenticationManagerBuilder va servir pour preciser quel strategie
-    //que vous vouler utiliser pourque spring security va chercher l'utilisateur
+
     @Autowired
     private DataSource dataSource;
     @Autowired
     private UserDetailsService userDetailsService;
     @Override
+    //configure=>la methode configure avec AuthenticationManagerBuilder va servir pour preciser quel strategie
+    //que vous vouler utiliser pourque spring security va chercher l'utilisateur
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-
         PasswordEncoder passwordEncoder= PasswordEncoder(); //permet de creer un objet BCryptPasswordEncoder
-
         /*String encodedPWD = PasswordEncoder().encode("1234");
         System.out.println(encodedPWD);
 
@@ -50,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .authoritiesByUsernameQuery("select username as principal, role as role from users_roles where username=?")
                 .rolePrefix("ROLE_") // ajoute un prefixe
                 .passwordEncoder(passwordEncoder);*/
-
-
 // quand l'utilisateur va entrer son username et mdp spring sec va faire appel a l'obj userDetailsService qui va faire appel a la method loadUserByUername
         auth.userDetailsService(userDetailsService);
 
@@ -61,8 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 
         // pour specifier les droits d'access
-         http.formLogin(); // vous demander a spring security je veux utliser un formulaire d'authentification
-        //http.formLogin().loginPage("/login");
+        // http.formLogin(); //  demander a spring security => utliser un formulaire d'authentification
+        http.formLogin().loginPage("/login");
         // pour utliser votre formulaire on ajout:
         //http.formLogin().loginPage("/login");
         //qlq soit les ressources utilisé dans l'app necessite une auth
