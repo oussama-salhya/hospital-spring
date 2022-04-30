@@ -18,3 +18,6 @@ Les fonctionnalités
 - [x] Validation des formulaires
 - [x] InMemoryAuthentication et JDBCAuthentication Or UserDetailsService
 - [x] Authentification avec Spring security
+
+
+[Rapport](https://github.com/leriaetnasta/Hospital_Management/blob/master/Rapport%20d'une%20application%20de%20gestion%20d'un%20hôpital.pdf)
