@@ -18,4 +18,3 @@ Les fonctionnalités
 - [x] Validation des formulaires
 - [x] InMemoryAuthentication et JDBCAuthentication Or UserDetailsService
 - [x] Authentification avec Spring security
-- [x] Login
