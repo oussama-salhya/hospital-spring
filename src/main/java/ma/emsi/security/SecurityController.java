@@ -10,4 +10,8 @@ public class SecurityController {
     }
     @GetMapping("/login")
     public String login(){ return "login";}
+    @GetMapping("logout")
+    public String logout() {
+        return "redirect:/login";
+    }
 }

@@ -21,8 +21,8 @@ public class PatientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PatientApplication.class, args);
 	}
-	//@Bean
-	//@Transactional
+	@Bean
+	@Transactional
 	CommandLineRunner commandLineRunner(
 			PatientRepository patientRepository,
 			RendezVousRepository rendezVousRepository,
@@ -30,7 +30,7 @@ public class PatientApplication {
 	){
 		return args-> {
 			System.out.println("test");
-			/*Stream.of("Xavier", "norman", "kai").forEach(name->{
+			Stream.of("Xavier", "norman", "kai","sanae").forEach(name->{
 						Patient patient= new Patient();
 						patient.setNom(name);
 						patient.setAdresse("adresse");
@@ -39,43 +39,43 @@ public class PatientApplication {
 						patient.setNumeroTelephone("06"+(int)(Math.random()*90000));
 						patient.setDateNaissance(new Date());
 						patient.setMalade((Math.random()*568)>0.5);
-						patient.setRendezVous(null);
+//						patient.setRendezVous(null);
 						patientRepository.save(patient);
 					}
 
 
-			);*/
+			);
 			List<Patient> listp= patientRepository.findAll();
 			for (Patient p:listp
 				 ) {
 				p.getNom();
 
 			}
-			/*Stream.of("loubna", "hayat", "hamza")
+			Stream.of("loubna", "hayat", "hamza","mohamed")
 					.forEach(name -> {
 								Medecin medecin = new Medecin();
 								medecin.setNom(name);
 								medecin.setEmail(name + "@gmail.com");
 								medecin.setSpecialite("dentaire");
-								medecin.setRendezVous(null);
+//								medecin.setRendezVous(null);
 								medecinRepository.save(medecin);
 								System.out.println("done");
 							}
 
-					);*/
+					);
 			List<Medecin> medecins= medecinRepository.findAll();
 			for (Medecin m: medecins
 				 ) {
 
 				System.out.println("nom=>"+m.getNom());
 			}
-			/*Stream.of(RendezVous.StatusRDV.CANCELED,RendezVous.StatusRDV.DONE,RendezVous.StatusRDV.PENDING )
+			Stream.of(StatusRDV.CANCELED,StatusRDV.DONE,StatusRDV.PENDING )
 					.forEach( status->{
 						RendezVous rendezVous= new RendezVous();
 						rendezVous.setDate(new Date());
 						rendezVous.setStatusRDV(status);
-						rendezVous.setPatient(listp.get(Math.random()>0.5?(Math.random()<0.5?1:2):(Math.random()<0.5?4:3)));
-						rendezVous.setMedecin(medecins.get(Math.random()>0.5?(Math.random()<0.5?1:2):(Math.random()<0.5?4:3)));
+						rendezVous.setPatient(listp.get(Math.random()>0.5?(Math.random()<0.5?1:2):(Math.random()<0.5?3:2)));
+						rendezVous.setMedecin(medecins.get(Math.random()>0.5?(Math.random()<0.5?1:2):(Math.random()<0.5?3:2)));
 						rendezVousRepository.save(rendezVous);
 					}
 
@@ -84,7 +84,7 @@ public class PatientApplication {
 			for (RendezVous r :
 					RDVs) {
 				r.getId();
-			}*/
+			}
 
 
 		};
@@ -94,7 +94,7 @@ public class PatientApplication {
 
 
 	}
-	//@Bean
+	@Bean
 	CommandLineRunner saveUsers(SecurityService securityService){
 		return args ->{
 			securityService.saveNewUser("loubna","1234","1234");

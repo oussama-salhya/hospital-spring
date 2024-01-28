@@ -26,7 +26,7 @@
                 <input id="rapport" class="form-control" type="text" name="rapport" th:value="${consultation.rapport}">
                 <span class="text-danger" th:errors="${consultation.rapport}"></span>
             </div>
-            <select class="form-control"  id="rdv">
+            <select class="form-control" name="rdvID"  id="rdv">
                 <option value="0">select rendez-vous</option>
                 <option th:each="rdv : ${rendezvous}"  th:text="${rdv.id}"></option>
 

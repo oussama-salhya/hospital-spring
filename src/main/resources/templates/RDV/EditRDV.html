@@ -34,12 +34,12 @@
       <div class="form-group mt-2">
         <label class="control-label">patient</label>
         <label th:text="${rendezVous.patient.nom}"></label>
-        <input class="form-control" type="hidden" th:value="${rendezVous.patient}">
+        <input class="form-control" type="hidden" name="monPid"  th:text="${rendezVous.patient.nom}" th:value="${rendezVous.patient.id}">
       </div>
       <div class="form-group mt-2">
         <label class="control-label">medecin</label>
         <label th:text="${rendezVous.medecin.nom}"></label>
-        <input class="form-control" type="hidden"  th:value="${rendezVous.medecin}">
+        <input class="form-control" type="hidden" name="monMid"  th:text="${rendezVous.medecin.nom}"  th:value="${rendezVous.medecin.id}">
 
       </div>
 

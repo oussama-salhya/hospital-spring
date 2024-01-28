@@ -20,8 +20,7 @@ public class Consultation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateConsultation;
     private String rapport;
-    @OneToOne
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @ManyToOne
     private RendezVous rendezVous;
 
 }

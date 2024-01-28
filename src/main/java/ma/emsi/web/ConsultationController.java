@@ -47,8 +47,13 @@ public class ConsultationController {
     public String saveConsultation(Model model,
                        @Valid Consultation consultation,
                        BindingResult bindingResult,
+                       Long rdvID,
                        @RequestParam(defaultValue = "0") int page){
         if (bindingResult.hasErrors()) return "formConsultation";
+        System.out.println(consultation.toString());
+        System.out.println("helloooooooooooo");
+        RendezVous rendezVous = rendezVousRepository.findById(rdvID).orElse(null);
+        consultation.setRendezVous(rendezVous);
         hopitalService.saveConsultation(consultation);
         return "redirect:/user/consultations?page="+page;
     }
